@@ -1,0 +1,40 @@
+services:
+  eschool.course.db.server:
+    image: postgres
+    user: postgres
+    ports:
+      - 5009:5432
+    environment:
+      - POSTGRES_DB=course.db
+      - POSTGRES_PASSWORD=course
+    volumes:
+      - eschool-data.course:/var/lib/postgresql/data
+  
+  eschool.class.db.server:
+    image: postgres
+    user: postgres
+    ports:
+      - 5008:5432
+    environment:
+      - POSTGRES_DB=class.db
+      - POSTGRES_PASSWORD=class
+    volumes:
+    - eschool-data.class:/var/lib/postgresql/data
+  
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=hunvitousalesforce@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 80:80
+    depends_on:
+      - eschool.course.db.server
+    volumes:
+      - eschool-data.pgadmin:/var/lib/pgadmin
+
+volumes:
+  eschool-data.course:
+  eschool-data.pgadmin:
+  eschool-data.class:
